@@ -8,7 +8,7 @@ public class SixDegreesOfKevinBacon {
     public static final String TESTFILENAME = ".\\jsonFiles\\Test_tmdb_5000_credits.csv";
 
     //constructor
-    SixDegreesOfKevinBacon(String inputFileName, String delimitingStringVal) throws FileNotFoundException, IOException {
+    SixDegreesOfKevinBacon(String inputFileName, String delimitingStringVal)  {
         GTMObject = new CombinedGraphAndTreeMap(inputFileName, delimitingStringVal);
     }
 
