@@ -28,11 +28,11 @@
 //
 //        File csvFile=new File(".\\jsonFiles\\tmdb_5000_credits.csv");
 //        String delimiter = ",";
-//        KevinBaconNumber kv;
+//        SixDegreesOfKevinBacon kv;
 //
 //
 //        try {
-//            kv = new KevinBaconNumber();
+//            kv = new SixDegreesOfKevinBacon();
 //
 //
 //            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(csvFile));

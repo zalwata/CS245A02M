@@ -1,51 +1,44 @@
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-
 import java.io.*;
 
-public class KevinBaconNumber {
+public class SixDegreesOfKevinBacon {
 
-    SymbolGraph sg;
+    CombinedGraphAndTreeMap GTMObject;
     public static final String FILENAME = ".\\jsonFiles\\tmdb_5000_credits.csv";
     public static final String TESTFILENAME = ".\\jsonFiles\\Test_tmdb_5000_credits.csv";
 
-
-    KevinBaconNumber(String filename, String delimiter) throws FileNotFoundException, IOException {
-        sg = new SymbolGraph(filename, delimiter);
+    SixDegreesOfKevinBacon(String inputFileName, String delimitingStringVal) throws FileNotFoundException, IOException {
+        GTMObject = new CombinedGraphAndTreeMap(inputFileName, delimitingStringVal);
     }
 
-    public void path(String source, String sink) {
-        Graph G = sg.G();
-        if (!sg.contains(source)) {
-            System.out.println(source + " not in database.");
+    public void createPath(String inputActorName, String inputDataToCompare) {
+        GraphDataStructure graphObject = GTMObject.grabGraphObject();
+        if (!GTMObject.isContainingStringVal(inputActorName)) {
+            System.out.println("Current Graph does not have -> "+inputActorName);
             return;
         }
 
-        int s = sg.index(source);
+        int indexValOfActor = GTMObject.grabIndexVal(inputActorName);
 
-        // Do a Breadth First Search
-        BreadthFirstSearch bfs = new BreadthFirstSearch(G, s);
+        BFSGraphSearch bfsObject = new BFSGraphSearch(graphObject, indexValOfActor);
 
-        System.out.println("");
-        if (sg.contains(sink)) {
-            int t = sg.index(sink);
-            if (bfs.hasPathTo(t)) {
-                System.out.println(sg.name(s) + " --> " + sg.name(t) + " || Bacon number = " + (bfs.dt(t) / 2));
-                for (int x : bfs.pathTo(t)) {
-                    if (x == s)
-                        System.out.println(sg.name(x));                 // Kevin Bacon
+        if (GTMObject.isContainingStringVal(inputDataToCompare)) {
+            int t = GTMObject.grabIndexVal(inputDataToCompare);
+            if (bfsObject.isValidPath(t)) {
+                System.out.println("Path between " + GTMObject.grabTheName(indexValOfActor) + " and " + GTMObject.grabTheName(t)
+                +": "+ GTMObject.grabTheName(indexValOfActor) + " --> " + GTMObject.grabTheName(t));
+                for (int node : bfsObject.grabThePath(t)) {
+                    if (node == indexValOfActor) {
+                        System.out.print(GTMObject.grabTheName(node));
+                    }
                     else {
-                        if (bfs.dt(x) % 2 != 0)
-                            System.out.println("   " + sg.name(x));     // Indents movie names
-                        else
-                            System.out.println(sg.name(x));
+                        System.out.print(GTMObject.grabTheName(node));
+                        System.out.print(" --> ");
                     }
                 }
             } else
-                System.out.println("Not connected");
+                System.out.println("No such connection");
         } else
-            System.out.println("Not in database");
+            System.out.println("No such actor");
     }
 
     public static void main(String[] args) {
@@ -64,20 +57,19 @@ public class KevinBaconNumber {
         File csvFile = new File(".\\jsonFiles\\tmdb_5000_credits.csv");
 //        File csvFile = new File(".\\jsonFiles\\Test_tmdb_5000_credits.csv");
 
-        String delimiter = ",";
-        KevinBaconNumber kv;
-
+        String delimitingString = ",";
+        SixDegreesOfKevinBacon sixDegreesOfKevinBacon;
 
         try {
-            String from;
-            String to;
-            kv = new KevinBaconNumber(FILENAME, delimiter);
-//            kv = new KevinBaconNumber(TESTFILENAME, delimiter);
+            String startingActor;
+            String endPointActor;
+            sixDegreesOfKevinBacon = new SixDegreesOfKevinBacon(FILENAME, delimitingString);
+//            sixDegreesOfKevinBacon = new SixDegreesOfKevinBacon(TESTFILENAME, delimitingString);
 
-            System.out.println("Type name of two actors to find one of the shortest paths between them---------------");
-            from = InputHelper.getStringInput("Enter the name (lastname, firstname): ");
-            to = InputHelper.getStringInput("Enter the name (lastname, firstname): ");
-            kv.path(from, to);
+            System.out.println("Type name of two actors endPointActor find one of the shortest paths between them---------------");
+            startingActor = FileReaderAndErrorHandler.handleStringInput("Enter the name (firstname lastname): ");
+            endPointActor = FileReaderAndErrorHandler.handleStringInput("Enter the name (firstname lastname): ");
+            sixDegreesOfKevinBacon.createPath(startingActor, endPointActor);
 
 
 
@@ -100,7 +92,7 @@ public class KevinBaconNumber {
 //            }
 
         } catch (Exception e) {
-            System.out.println("Error in Parsing CSV File");
+            System.out.println("Error Occurred");
         }
 
 
