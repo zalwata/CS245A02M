@@ -5,11 +5,13 @@ public class BagStructure<CountingObjects> implements Iterable<CountingObjects> 
     private int COUNTEDOBJECTSINTHEBAG;
     private lINKEDlISTNode<CountingObjects> first;
 
+    //linkedlist
     private class lINKEDlISTNode<CountingObjects> {
         private CountingObjects data;
         private lINKEDlISTNode<CountingObjects> next;
     }
 
+    //bag constructor
     public BagStructure() {
         first = null;
         COUNTEDOBJECTSINTHEBAG = 0;
@@ -19,6 +21,7 @@ public class BagStructure<CountingObjects> implements Iterable<CountingObjects> 
         return new ListIterator<CountingObjects>(first);
     }
 
+    //using iterator to go through the linked list
     private class ListIterator<CountingObjects> implements Iterator<CountingObjects> {
         private lINKEDlISTNode<CountingObjects> current;
 
@@ -37,6 +40,7 @@ public class BagStructure<CountingObjects> implements Iterable<CountingObjects> 
         }
     }
 
+    //add linkedlist
     public void add(CountingObjects item) {
         lINKEDlISTNode<CountingObjects> oldfirst = first;
         first = new lINKEDlISTNode<CountingObjects>();

@@ -7,14 +7,25 @@ import java.util.TreeMap;
 
 public class CombinedGraphAndTreeMap {
 
-    private GraphDataStructure graphObject;
     public TreeMap<String, Integer> treeMapObject;
+    private GraphDataStructure graphObject;
     private String[] graphToTreeMapHelperArr;
 
-    public CombinedGraphAndTreeMap(String filename, String delimiter) throws FileNotFoundException, IOException {
+
+    public int grabIndexVal(String inputString) {
+        return treeMapObject.get(inputString);
+    }
+
+    public GraphDataStructure grabGraphObject() {
+        return graphObject;
+    }
+
+    //initiate treemap from the graph and param input
+    public CombinedGraphAndTreeMap(String filename, String delimiter) {
 
         treeMapObject = new TreeMap<>();
 
+        //goes through the csv file with delimiter to collect the right info and generate treemap
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filename));
             CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
@@ -43,6 +54,7 @@ public class CombinedGraphAndTreeMap {
             System.out.println("Error");
         }
 
+        //using the generated treemap, initiate the graph
         graphToTreeMapHelperArr = new String[treeMapObject.size()];
         for(String name : treeMapObject.keySet())
             graphToTreeMapHelperArr[treeMapObject.get(name)] = name;
@@ -51,11 +63,8 @@ public class CombinedGraphAndTreeMap {
             InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filename));
             CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
             for (CSVRecord csvRecord : csvParser) {
-                System.out.println("Column 2 : " + csvRecord.get(1)); // list of movie names
                 String movieName = csvRecord.get(1);
                 int v = treeMapObject.get(movieName);
-                System.out.println(movieName);
-                System.out.println("Column 3 : " + csvRecord.get(2)); // list of actor names
                 String actorNames = csvRecord.get(2);
                 String[] data = actorNames.split(delimiter);
                 for (String s: data) {
@@ -79,20 +88,14 @@ public class CombinedGraphAndTreeMap {
         }
     }
 
+    public String grabTheName(int vertexIndexVal) {
+        return graphToTreeMapHelperArr[vertexIndexVal];
+    }
+
     public boolean isContainingStringVal(String inputString) {
         return treeMapObject.containsKey(inputString);
     }
 
-    public int grabIndexVal(String inputString) {
-        return treeMapObject.get(inputString);
-    }
 
-    public GraphDataStructure grabGraphObject() {
-        return graphObject;
-    }
-
-    public String grabTheName(int vertexIndexVal) {
-        return graphToTreeMapHelperArr[vertexIndexVal];
-    }
 
 }

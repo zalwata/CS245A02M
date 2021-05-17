@@ -1,15 +1,18 @@
 import java.io.*;
 
+//main class to run the six degrees of kevin bacon game
 public class SixDegreesOfKevinBacon {
 
     CombinedGraphAndTreeMap GTMObject;
     public static final String FILENAME = ".\\jsonFiles\\tmdb_5000_credits.csv";
     public static final String TESTFILENAME = ".\\jsonFiles\\Test_tmdb_5000_credits.csv";
 
+    //constructor
     SixDegreesOfKevinBacon(String inputFileName, String delimitingStringVal) throws FileNotFoundException, IOException {
         GTMObject = new CombinedGraphAndTreeMap(inputFileName, delimitingStringVal);
     }
 
+    //creates path between two string value
     public void createPath(String inputActorName, String inputDataToCompare) {
         GraphDataStructure graphObject = GTMObject.grabGraphObject();
         if (!GTMObject.isContainingStringVal(inputActorName)) {
@@ -21,6 +24,7 @@ public class SixDegreesOfKevinBacon {
 
         BFSGraphSearch bfsObject = new BFSGraphSearch(graphObject, indexValOfActor);
 
+        //prints out the final result
         if (GTMObject.isContainingStringVal(inputDataToCompare)) {
             int t = GTMObject.grabIndexVal(inputDataToCompare);
             if (bfsObject.isValidPath(t)) {
@@ -41,13 +45,31 @@ public class SixDegreesOfKevinBacon {
             System.out.println("No such actor");
     }
 
+    public static String handleStringInput(String dataInput)
+            throws NumberFormatException {
+
+        String stringInput = handleDataForInput(dataInput);
+        return stringInput;
+    }
+
+    public static String handleDataForInput(String dataInput) {
+        BufferedReader readingMaterial = new BufferedReader(
+                new InputStreamReader(System.in));
+
+        System.out.print(dataInput);
+        System.out.flush();
+        try {
+            return readingMaterial.readLine();
+        } catch (Exception e) {
+            return "Exception error due to -> " + e.getMessage();
+        }
+    }
+
     public static void main(String[] args) {
 
         //TODO:
         // 2. CS112 Parser example
         // 3. grab only actor's name
-        // 4. make the second version of github repo before turning in and remove this repo
-        // 5. example uses "," in between last name and first name, i can use " " space in between first and last name
         // 6. create 'characterData' from 'data' via "," or "character" string
         // 7. error occurs when 'characterData' is added before 'data'. checkout what data holds
         // 8. instead of going through filtering out all non-alphabetical characters, you can also strengthen the search so that as long as it contains the search item.
@@ -60,6 +82,7 @@ public class SixDegreesOfKevinBacon {
         String delimitingString = ",";
         SixDegreesOfKevinBacon sixDegreesOfKevinBacon;
 
+        //to run the csv file and record user input
         try {
             String startingActor;
             String endPointActor;
@@ -67,8 +90,8 @@ public class SixDegreesOfKevinBacon {
 //            sixDegreesOfKevinBacon = new SixDegreesOfKevinBacon(TESTFILENAME, delimitingString);
 
             System.out.println("Type name of two actors endPointActor find one of the shortest paths between them---------------");
-            startingActor = FileReaderAndErrorHandler.handleStringInput("Enter the name (firstname lastname): ");
-            endPointActor = FileReaderAndErrorHandler.handleStringInput("Enter the name (firstname lastname): ");
+            startingActor = handleStringInput("Enter the name (firstname lastname): ");
+            endPointActor = handleStringInput("Enter the name (firstname lastname): ");
             sixDegreesOfKevinBacon.createPath(startingActor, endPointActor);
 
 

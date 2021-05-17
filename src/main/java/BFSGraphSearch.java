@@ -9,6 +9,12 @@ public class BFSGraphSearch {
     private int[] vertexArr;
     private int[] edgeArr;
 
+    public boolean isValidPath(int indexNum){
+        return vertexVisited[indexNum];
+    }
+
+
+    //bfsGraph constructor
     public BFSGraphSearch(GraphDataStructure graphDataStructureObject, int indexVal){
         vertexVisited = new boolean[graphDataStructureObject.createVertex()];
         edgeArr = new int[graphDataStructureObject.createVertex()];
@@ -18,6 +24,7 @@ public class BFSGraphSearch {
         combinedDijkstraAndBFS(graphDataStructureObject, indexVal);
     }
 
+    //use dijkstra along with BFS
     private void combinedDijkstraAndBFS(GraphDataStructure ggraphObject, int indexVal){
         Queue<Integer> queueObject = new LinkedList<>();
         vertexVisited[indexVal] = true;
@@ -37,14 +44,11 @@ public class BFSGraphSearch {
         }
     }
 
-    public boolean isValidPath(int indexNum){
-        return vertexVisited[indexNum];
-    }
-
     public int initDistanceCalculation(int indexNum){
         return edgeArr[indexNum];
     }
 
+    //return the iterable to return the path
     public Iterable<Integer> grabThePath(int pathNum){
         if(!isValidPath(pathNum))
             return null;
