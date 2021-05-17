@@ -7,14 +7,15 @@ import java.io.*;
 public class KevinBaconNumber {
 
     SymbolGraph sg;
-    public static final String FILENAME =".\\jsonFiles\\tmdb_5000_credits.csv";
+    public static final String FILENAME = ".\\jsonFiles\\tmdb_5000_credits.csv";
+    public static final String TESTFILENAME = ".\\jsonFiles\\Test_tmdb_5000_credits.csv";
 
 
     KevinBaconNumber(String filename, String delimiter) throws FileNotFoundException, IOException {
         sg = new SymbolGraph(filename, delimiter);
     }
 
-    public void path(String source, String sink){
+    public void path(String source, String sink) {
         Graph G = sg.G();
         if (!sg.contains(source)) {
             System.out.println(source + " not in database.");
@@ -27,25 +28,23 @@ public class KevinBaconNumber {
         BreadthFirstSearch bfs = new BreadthFirstSearch(G, s);
 
         System.out.println("");
-        if(sg.contains(sink)){
+        if (sg.contains(sink)) {
             int t = sg.index(sink);
-            if(bfs.hasPathTo(t)){
-                System.out.println(sg.name(s) + " --> " + sg.name(t) + " || Bacon number = " + (bfs.dt(t)/2));
-                for(int x : bfs.pathTo(t)){
-                    if(x == s)
+            if (bfs.hasPathTo(t)) {
+                System.out.println(sg.name(s) + " --> " + sg.name(t) + " || Bacon number = " + (bfs.dt(t) / 2));
+                for (int x : bfs.pathTo(t)) {
+                    if (x == s)
                         System.out.println(sg.name(x));                 // Kevin Bacon
-                    else{
-                        if(bfs.dt(x) % 2 != 0)
+                    else {
+                        if (bfs.dt(x) % 2 != 0)
                             System.out.println("   " + sg.name(x));     // Indents movie names
                         else
                             System.out.println(sg.name(x));
                     }
                 }
-            }
-            else
+            } else
                 System.out.println("Not connected");
-        }
-        else
+        } else
             System.out.println("Not in database");
     }
 
@@ -54,11 +53,17 @@ public class KevinBaconNumber {
         //TODO:
         // 2. CS112 Parser example
         // 3. grab only actor's name
-        // 4. make the second version of github repo before turning in and remove this repo.
+        // 4. make the second version of github repo before turning in and remove this repo
+        // 5. example uses "," in between last name and first name, i can use " " space in between first and last name
+        // 6. create 'characterData' from 'data' via "," or "character" string
+        // 7. error occurs when 'characterData' is added before 'data'. checkout what data holds
+        // 8. instead of going through filtering out all non-alphabetical characters, you can also strengthen the search so that as long as it contains the search item.
 
         System.out.println("=============Java CSV Parse Example================");
 
-        File csvFile=new File(".\\jsonFiles\\tmdb_5000_credits.csv");
+        File csvFile = new File(".\\jsonFiles\\tmdb_5000_credits.csv");
+//        File csvFile = new File(".\\jsonFiles\\Test_tmdb_5000_credits.csv");
+
         String delimiter = ",";
         KevinBaconNumber kv;
 
@@ -67,25 +72,36 @@ public class KevinBaconNumber {
             String from;
             String to;
             kv = new KevinBaconNumber(FILENAME, delimiter);
+//            kv = new KevinBaconNumber(TESTFILENAME, delimiter);
+
             System.out.println("Type name of two actors to find one of the shortest paths between them---------------");
             from = InputHelper.getStringInput("Enter the name (lastname, firstname): ");
             to = InputHelper.getStringInput("Enter the name (lastname, firstname): ");
             kv.path(from, to);
 
 
+
 //            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(csvFile));
-//            CSVParser csvParser= CSVFormat.DEFAULT.parse(inputStreamReader);
-//            for (CSVRecord csvRecord:csvParser){
-//                System.out.println("Column 1 : "+csvRecord.get(0)+" | Column 2 : "+csvRecord.get(1)+
-//                        "| Column 3 : "+csvRecord.get(2));
+//            CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
+//            for (CSVRecord csvRecord : csvParser) {
+////                System.out.println("Column 1 : " + csvRecord.get(0) + " | Column 2 : " + csvRecord.get(1) +
+////                        "| Column 3 : " + csvRecord.get(2));
+//
+//                System.out.println("Column 1 : " + csvRecord.get(0));
+//                System.out.println("Column 2 : " + csvRecord.get(1)); // list of movie names
+//
+//                String movieName = csvRecord.get(1);
+//
+//                System.out.println(movieName);
+//
+//                System.out.println("Column 3 : " + csvRecord.get(2)); // list of actor names
+//
+//                String actorNames = csvRecord.get(2);
 //            }
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error in Parsing CSV File");
         }
-
-
 
 
 //        FileReader reader;
@@ -119,8 +135,6 @@ public class KevinBaconNumber {
 //            String cast_id = (String) cast.get("cast_id");
 //            System.out.println(cast_id);
 //        }
-
-
 
     }
 }
